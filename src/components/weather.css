@@ -1,0 +1,68 @@
+.weather-container {
+    
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .weather-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-input {
+    padding: 8px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .search-btn {
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  
+  .weather-cards{
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    
+
+  }
+
+  .weather-card{
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+   
+    
+    
+  }
+  
+ 
+  
+  .loading-msg,
+  .error-msg {
+    margin-bottom: 10px;
+    color: red;
+  }
+
+.weather-card p{
+
+   
+    padding:10px;
+    border: 2px solid black;
+    
+    width: 100%;
+    
+    
+  }
+  
