@@ -13,9 +13,9 @@ const Weather = () => {
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
       if (city.trim() === "") {
-            setWeatherData(null)
-            setError("please enter the city name")
-            return
+        setWeatherData(null);
+        setError("Please enter the city name.");
+        return;
       }
     }, 1000);
 
@@ -25,8 +25,7 @@ const Weather = () => {
   const getWeather = async () => {
     setLoading(true);
     setError("");
- 
-    
+
     try {
       const response = await axios.get(
         `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
@@ -35,7 +34,7 @@ const Weather = () => {
       setWeatherData(data);
     } catch (error) {
       setError("Error fetching data. Please try again later.");
-      setWeatherData(null)
+      setWeatherData(null);
     }
 
     setLoading(false);
@@ -43,13 +42,10 @@ const Weather = () => {
 
   const handleSearch = () => {
     if (city.trim() === "") {
-      // setError("Please enter the city name.");
+      setError("Please enter the city name.");
       return;
-
-
     }
     getWeather();
-    
   };
 
   const handleChange = (e) => {
@@ -73,15 +69,12 @@ const Weather = () => {
       {loading && <p className="loading-msg">Loading data...</p>}
       {error && <p className="error-msg">{error}</p>}
       <div className="weather-cards">
-
-      
         {weatherData && (
           <div className="weather-card">
-               
-            <p>Temperature: <h4>{weatherData.current.temp_c}°C</h4> </p>
-            <p>Humidity: <h4>{weatherData.current.humidity}%</h4></p>
-            <p>Condition: <h4>{weatherData.current.condition.text}</h4></p>
-            <p>Wind Speed: <h4>{weatherData.current.wind_kph} km/h</h4></p>
+            <p>Temperature: <span>{weatherData.current.temp_c}°C</span></p>
+            <p>Humidity: <span>{weatherData.current.humidity}%</span></p>
+            <p>Condition: <span>{weatherData.current.condition.text}</span></p>
+            <p>Wind Speed: <span>{weatherData.current.wind_kph} km/h</span></p>
           </div>
         )}
       </div>
