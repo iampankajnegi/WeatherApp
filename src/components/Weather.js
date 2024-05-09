@@ -78,7 +78,7 @@ const Weather = () => {
         {weatherData && (
           <div className="weather-card">
                
-            <p>Temperature: <h5>{weatherData.current.temp_c}°C</h5> </p>
+            <p>Temperature: <h4>{weatherData.current.temp_c}°C</h4> </p>
             <p>Humidity: <h4>{weatherData.current.humidity}%</h4></p>
             <p>Condition: <h4>{weatherData.current.condition.text}</h4></p>
             <p>Wind Speed: <h4>{weatherData.current.wind_kph} km/h</h4></p>
