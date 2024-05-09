@@ -12,8 +12,10 @@ const Weather = () => {
 
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
-      if (city.trim() !== "") {
-        return
+      if (city.trim() === "") {
+            setWeatherData(null)
+            setError("please enter the city name")
+            return
       }
     }, 1000);
 
@@ -23,7 +25,8 @@ const Weather = () => {
   const getWeather = async () => {
     setLoading(true);
     setError("");
-
+ 
+    
     try {
       const response = await axios.get(
         `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
@@ -32,6 +35,7 @@ const Weather = () => {
       setWeatherData(data);
     } catch (error) {
       setError("Error fetching data. Please try again later.");
+      setWeatherData(null)
     }
 
     setLoading(false);
@@ -39,12 +43,13 @@ const Weather = () => {
 
   const handleSearch = () => {
     if (city.trim() === "") {
-      setError("Please enter the city name.");
+      // setError("Please enter the city name.");
       return;
 
 
     }
     getWeather();
+    
   };
 
   const handleChange = (e) => {
@@ -68,9 +73,11 @@ const Weather = () => {
       {loading && <p className="loading-msg">Loading data...</p>}
       {error && <p className="error-msg">{error}</p>}
       <div className="weather-cards">
+
+      
         {weatherData && (
           <div className="weather-card">
-            
+               
             <p>Temperature: <h5>{weatherData.current.temp_c}°C</h5> </p>
             <p>Humidity: <h4>{weatherData.current.humidity}%</h4></p>
             <p>Condition: <h4>{weatherData.current.condition.text}</h4></p>
