@@ -14,7 +14,7 @@ const Weather = () => {
     const debounceTimeout = setTimeout(() => {
       if (city.trim() === "") {
         setWeatherData(null);
-        setError("Please enter the city name.");
+        setError("Please enter the city name");
         return;
       }
     }, 1000);
