@@ -16,6 +16,9 @@ const Weather = () => {
         setWeatherData(null);
         setError("Please enter the city name");
         return;
+      } else {
+        // Clear any previous error when the city is entered
+        setError("");
       }
     }, 1000);
 
@@ -30,7 +33,7 @@ const Weather = () => {
       const response = await axios.get(
         `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
       );
-      const data = await response.data;
+      const data = response.data; // Don't need to await here
       setWeatherData(data);
     } catch (error) {
       setError("Error fetching data. Please try again later.");
