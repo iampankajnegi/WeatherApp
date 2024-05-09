@@ -15,11 +15,12 @@ const Weather = () => {
       if (city.trim() === "") {
         setWeatherData(null);
         setError("Please enter the city name");
+        getWeather();
         return;
       } else {
         // Clear any previous error when the city is entered
         setError("");
-        getWeather();
+       
       }
     }, 1000);
 
