@@ -19,6 +19,7 @@ const Weather = () => {
       } else {
         // Clear any previous error when the city is entered
         setError("");
+        getWeather();
       }
     }, 1000);
 
