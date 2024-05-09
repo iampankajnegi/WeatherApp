@@ -31,7 +31,7 @@ const Weather = () => {
       const response = await axios.get(
         `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
       );
-      const data = response.data;
+      const data = await response.data;
       setWeatherData(data);
     } catch (error) {
       setError("Error fetching data. Please try again later.");
