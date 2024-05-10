@@ -18,7 +18,7 @@ const Weather = () => {
             
       
       }
-    
+      
     }, 1000);
 
     return () => clearTimeout(debounceTimeout);
@@ -34,12 +34,7 @@ const Weather = () => {
         `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
       );
       const data = await response.data;
-      if (data && data.current) {
-        setWeatherData(data); // Set weatherData with the correct structure
-      } else {
-        setError("Invalid data format received.");
-        setWeatherData(null);
-      }
+      setWeatherData(data);
     } catch (error) {
       setError("Error fetching data. Please try again later.");
       setWeatherData(null)
@@ -85,10 +80,10 @@ const Weather = () => {
         {weatherData && (
           <div className="weather-card">
                
-            <p>Temperature: <h4>{weatherData.current.temp_c}°C</h4> </p>
-            <p>Humidity: <h4>{weatherData.current.humidity}%</h4></p>
-            <p>Condition: <h4>{weatherData.current.condition.text}</h4></p>
-            <p>Wind Speed: <h4>{weatherData.current.wind_kph} km/h</h4></p>
+            <p>Temperature: <strong>{weatherData.current.temp_c}°C</strong> </p>
+            <p>Humidity: <strong>{weatherData.current.humidity}%</strong></p>
+            <p>Condition: <strong>{weatherData.current.condition.text}</strong></p>
+            <p>Wind Speed: <strong>{weatherData.current.wind_kph} km/h</strong></p>
           </div>
         )}
       </div>
