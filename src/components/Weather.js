@@ -13,12 +13,10 @@ const Weather = () => {
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
       if (city.trim() === "") {
-        setWeatherData(null)
-        setError("please enter the city name")
-            
-      
+        setError("Please enter a city name");
+      } else {
+        setError("");
       }
-      
     }, 1000);
 
     return () => clearTimeout(debounceTimeout);
@@ -27,17 +25,21 @@ const Weather = () => {
   const getWeather = async () => {
     setLoading(true);
     setError("");
- 
-    
+
     try {
       const response = await axios.get(
         `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
       );
-      const data = await response.data;
-      setWeatherData(data);
+      const data = response.data;
+      if (data && data.current) {
+        setWeatherData(data);
+      } else {
+        setError("Invalid data format received.");
+        setWeatherData(null);
+      }
     } catch (error) {
       setError("Error fetching data. Please try again later.");
-      setWeatherData(null)
+      setWeatherData(null);
     }
 
     setLoading(false);
@@ -45,13 +47,10 @@ const Weather = () => {
 
   const handleSearch = () => {
     if (city.trim() === "") {
-      // setError("Please enter the city name.");
+      setError("Please enter a city name.");
       return;
-
-
     }
     getWeather();
-    
   };
 
   const handleChange = (e) => {
@@ -75,15 +74,21 @@ const Weather = () => {
       {loading && <p className="loading-msg">Loading data...</p>}
       {error && <p className="error-msg">{error}</p>}
       <div className="weather-cards">
-
-      
         {weatherData && (
           <div className="weather-card">
-               
-            <p>Temperature: <strong>{weatherData.current.temp_c}°C</strong> </p>
-            <p>Humidity: <strong>{weatherData.current.humidity}%</strong></p>
-            <p>Condition: <strong>{weatherData.current.condition.text}</strong></p>
-            <p>Wind Speed: <strong>{weatherData.current.wind_kph} km/h</strong></p>
+            <p>
+              Temperature: <strong>{weatherData.current.temp_c}°C</strong>
+            </p>
+            <p>
+              Humidity: <strong>{weatherData.current.humidity}%</strong>
+            </p>
+            <p>
+              Condition: <strong>{weatherData.current.condition.text}</strong>
+            </p>
+            <p>
+              Wind Speed:{" "}
+              <strong>{weatherData.current.wind_kph} km/h</strong>
+            </p>
           </div>
         )}
       </div>
