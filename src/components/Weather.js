@@ -18,10 +18,7 @@ const Weather = () => {
             
       
       }
-      else{
-        
-        getWeather();
-      }
+    
     }, 1000);
 
     return () => clearTimeout(debounceTimeout);
@@ -37,7 +34,12 @@ const Weather = () => {
         `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
       );
       const data = await response.data;
-      setWeatherData(data);
+      if (data && data.current) {
+        setWeatherData(data); // Set weatherData with the correct structure
+      } else {
+        setError("Invalid data format received.");
+        setWeatherData(null);
+      }
     } catch (error) {
       setError("Error fetching data. Please try again later.");
       setWeatherData(null)
