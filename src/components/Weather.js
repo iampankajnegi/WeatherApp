@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./weather.css";
 
@@ -7,50 +7,71 @@ const Weather = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [debounceTimer, setDebounceTimer] = useState(null);
 
-  const apiKey = "37454a6382fc47caab2111239240605";
+  const apiKey = "YOUR_API_KEY";
 
   useEffect(() => {
-    const debounceTimeout = setTimeout(() => {
-      if (city.trim() === "") {
-        setError("Please enter a city name");
-      } else {
-        setError("");
-      }
-    }, 1000);
-
-    return () => clearTimeout(debounceTimeout);
-  }, [city]);
-
-  const getWeather = async () => {
-    setLoading(true);
-    setError("");
-
-    try {
-      const response = await axios.get(
-        `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
-      );
-      const data = response.data;
-      if (data && data.current) {
-        setWeatherData(data);
-      } else {
-        setError("Invalid data format received.");
-        setWeatherData(null);
-      }
-    } catch (error) {
-      setError("Error fetching data. Please try again later.");
+    if (city.trim() === "") {
       setWeatherData(null);
+      setError("Please enter a city name");
+      return;
     }
 
-    setLoading(false);
-  };
+    const fetchData = async () => {
+      setLoading(true);
+      setError("");
+
+      try {
+        const response = await axios.get(
+          `https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`
+        );
+        const data = response.data;
+        setWeatherData(data);
+      } catch (error) {
+        setError("Error fetching data. Please try again later.");
+        setWeatherData(null);
+      }
+
+      setLoading(false);
+    };
+
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+
+    const timer = setTimeout(() => {
+      fetchData();
+    }, 1000);
+
+    setDebounceTimer(timer);
+
+    return () => clearTimeout(timer);
+  }, [city, apiKey, debounceTimer]);
 
   const handleSearch = () => {
     if (city.trim() === "") {
       setError("Please enter a city name.");
       return;
     }
-    getWeather();
+
+    setDebounceTimer(null); // Clear any existing debounce timer
+    setLoading(true);
+    setError("");
+
+    axios
+      .get(`https://api.weatherapi.com/v1/current.json?q=${city}&key=${apiKey}`)
+      .then((response) => {
+        const data = response.data;
+        setWeatherData(data);
+      })
+      .catch((error) => {
+        setError("Error fetching data. Please try again later.");
+        setWeatherData(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleChange = (e) => {
